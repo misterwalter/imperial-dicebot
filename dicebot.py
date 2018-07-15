@@ -79,7 +79,7 @@ async def on_message(message):
     elif "now" in message.content.lower():
         await slow_talk(
             message,
-            "Now, don't be hasty young @{}.".format(message.author.mention)
+            "Now, don't be hasty young {}.".format(message.author.mention)
         )
 
 
