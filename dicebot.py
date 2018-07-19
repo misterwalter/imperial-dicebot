@@ -76,7 +76,7 @@ async def on_message(message):
                     subject
                 ))
     # Mindless trolling
-    elif "now" in message.content.lower():
+    elif "now" in message.content.lower() and random.randrange(1, 10) is 1:
         await slow_talk(
             message,
             "Now, don't be hasty young {}.".format(message.author.mention)
