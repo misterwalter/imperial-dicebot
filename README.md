@@ -14,6 +14,7 @@ When first setting up the bot, be sure to run the ./bootstrap.sh file, as it wil
 # Running
 While not super satisfying to use, the dicebot.sh script will restart your bot in case it crashes. This is unfortunately useful, as errors that I don't yet understand seem to come through sometimes, especially when working over a spotty connection. The bot is reliable over a good connection though, and in my experience a spotty one only caused issues on a week to week basis, not a minute to minute one.
 
+# Sharing and Feedback
 This code should be considered free to use or learn from by anyone, attribution and notification is preferred if appropriate but not required. There's probably an official license that says that, but I don't feel like digging through contracts right now, and realistically nobody's gonna rip off a bot this simple. I probably wouldn't even care if they did. I mostly just want to hear from you if you get anything out of this, that would really make my day.
 
 I'd love to hear any suggestions for usability or reliability improvements, please feel free to leave a comment, issue, etc.
