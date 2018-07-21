@@ -3,10 +3,16 @@
 #put your discord login token here
 token
 
+#put your personal discord account's mention tag here
+bot_admin
+
+#A formatting file for DiceRecord reports
+report_format
+
 #where system logs are placed
 dice.log
 
-#really? All this clutter, and this one wasn't in there?
+#etc
 *.swp
 
 # Byte-compiled / optimized / DLL files
