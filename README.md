@@ -5,6 +5,9 @@ The game itself is available for free at https://imperialdawn.com
 
 This uses the discord.py library available at https://github.com/Rapptz/discord.py, which is pretty great all things considered, especially for setting up simple bots.
 
+# Add To Your Server
+To simply add this bot to your server as is, [have a server admin click this link](https://discordapp.com/oauth2/authorize?client_id=376921158420791297&scope=bot&permissions=285760) and authorize the bot on that server. Not all requested permissions are currently used, but given that it's impossible for me to ask for more permissions later, I opted to ask for them now. Feel free to not check all the boxes.
+
 # Bootstrapping
 When first setting up the bot, be sure to run the ./bootstrap.sh file, as it will do a few handy things for you:
 - Create an example **bot_admin** file. This file should contain the mention tag of the whoever you want to be able to control the bot. The current tag is invalid, but looks a bit like a real mention tag.
