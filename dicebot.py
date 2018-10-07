@@ -9,6 +9,10 @@ token = open("token", "r").read().strip()
 bot_admin = open("bot_admin", "r").read().strip()
 report_format = open("report_format", "r").read()
 
+# Regexes
+check_regex = re.compile("^[rcy](\d{1,3})(.*)", re.IGNORECASE)
+save_regex = re.compile("^[ns](\d{1,3})(.*)", re.IGNORECASE)
+generic_regex = re.compile("^(\d{1,8})d(\d{1,8})(.*)", re.IGNORECASE)
 
 class DiceRecord:
     """
@@ -16,6 +20,7 @@ class DiceRecord:
     Note that the players name is not stored here,
     it is the key by which the DiceRecord is accessed.
     """
+
 
     def __init__(self):
         self.check_successes = 0
@@ -71,10 +76,6 @@ class DiceRecord:
 client = discord.Client()
 dice_manager_dict = defaultdict(DiceRecord)
 dice_manager_dict["Everyone"]
-# Note that any roll with more than 300ish dice is going to fail to send anyway
-check_regex = re.compile("^[rcy](\d{1,3})(.*)", re.IGNORECASE)
-save_regex = re.compile("^[ns](\d{1,3})(.*)", re.IGNORECASE)
-
 
 @client.event
 async def on_ready():
@@ -93,7 +94,7 @@ async def on_message(message):
         message.content,
     ))
     lower = message.content.lower()
-    # Roll a check (success on 3-6)
+    # Roll a check (success on 2-6)
     if check_regex.match(message.content):
         m = check_regex.match(message.content)
         results = ""
@@ -101,7 +102,7 @@ async def on_message(message):
         dice = int(m.group(1))
         for i in range(dice):
             die = random.randrange(1, 7)
-            if die > 2:
+            if die >= 2:
                 score += 1
                 results += " **[{}]**".format(die)
             else:
@@ -119,12 +120,12 @@ async def on_message(message):
         await client.send_message(
                 message.channel,
                 "**{0}** got {1} successes {2} on their **Check**{3}".format(
-                    message.author.display_name,
+                    message.author.mention,
                     score,
                     results,
                     subject
                 ))
-    # Roll a save (success on 4-6)
+    # Roll a save (success on 5-6)
     elif save_regex.match(message.content):
         m = save_regex.match(message.content)
         results = ""
@@ -132,7 +133,7 @@ async def on_message(message):
         dice = int(m.group(1))
         for i in range(dice):
             die = random.randrange(1, 7)
-            if die > 3:
+            if die >= 5:
                 score += 1
                 results += " **[{}]**".format(die)
             else:
@@ -151,13 +152,40 @@ async def on_message(message):
         await client.send_message(
                 message.channel,
                 "**{0}** got {1} successes {2} on their **Save**{3}".format(
-                    message.author.display_name,
+                    message.author.mention,
                     score,
                     results,
                     subject
                 ))
+    # Roll a generic roll
+    elif generic_regex.match(message.content):
+        m = generic_regex.match(message.content)
+        score = 0
+        results = ""
+        dice = int(m.group(1))
+        sides = int(m.group(2))
+        for i in range(dice):
+            die = random.randrange(1, sides+1)
+            score += die
+            if dice < 300:
+            	results += "[{}]".format(die)
+
+        subject = m.group(3)
+
+        if len(results) > 400:
+            results = "[lot of dice]"	
+
+        subject = " re:" + subject if subject else ""
+        await client.send_message(
+                message.channel,
+                "**{0}** rolled{1} Total: **{2}** {3}".format(
+                    message.author.display_name,
+                    " " + results if results else "",
+                    score,
+                    subject,
+                ))
     # Mindless trolling
-    elif "now" in lower and random.randrange(1, 10) is 1:
+    elif "now" in lower and random.randrange(1, 3) is 1:
         await slow_talk(
             message,
             "Now, don't be hasty young {}.".format(message.author.mention)
