@@ -6,15 +6,15 @@ The game itself is available for free at https://imperialdawn.com
 This uses the discord.py library available at https://github.com/Rapptz/discord.py, which is pretty great all things considered, especially for setting up simple bots.
 
 # Basic Use
-To roll a check, type either r, c, or y (corresponding to Roll, Check, or Yes) immedidately followed by a number, like so:
+To roll a check, type 'c' (corresponding to Check) immedidately followed by a number, like so:
 
  - `c3`  ->  **Tdomo Dau** got 3 successes  **[4]**[1] **[3]** on their Check
- - `r4 throw gallon of boi`  ->  **Tosser** got 3 successes  **[4]**[1] **[3]** **[6]** on their Check re:  throw gallon of boi
+ - `c4 throw gallon of boi`  ->  **Tosser** got 3 successes  **[4]**[1] **[3]** **[6]** on their Check re:  throw gallon of boi
 
-A Save can be rolled in a similar fashion, using s or n (Save or No):
+A Save can be rolled in a similar fashion, using 's' (corresponding to Save):
 
  - `s2 pls no`  ->  **Civi** got 0 successes [1][2] on their Save re:  pls no
- - `n6 dance away gracefully`  ->  **Senulous the Smooth** got 5 successes **[5]** **[4]** **[6]**[3] **[4]** **[6]** on their Save re: dance away gracefully
+ - `s6 dance away gracefully`  ->  **Senulous the Smooth** got 5 successes **[5]** **[4]** **[6]**[3] **[4]** **[6]** on their Save re: dance away gracefully
 
 As you can see, adding more text to end of the message beyond the roll specification simply leaves a note on the end of the response, which can be handy and fun.
 
