@@ -10,8 +10,8 @@ bot_admin = open("bot_admin", "r").read().strip()
 report_format = open("report_format", "r").read()
 
 # Regexes
-check_regex = re.compile("^[rcy](\d{1,3})(.*)", re.IGNORECASE)
-save_regex = re.compile("^[ns](\d{1,3})(.*)", re.IGNORECASE)
+check_regex = re.compile("^c(\d{1,3})(.*)", re.IGNORECASE)
+save_regex = re.compile("^s(\d{1,3})(.*)", re.IGNORECASE)
 generic_regex = re.compile("^(\d{1,8})d(\d{1,8})(.*)", re.IGNORECASE)
 
 class DiceRecord:
