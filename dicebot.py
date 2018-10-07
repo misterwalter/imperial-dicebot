@@ -14,13 +14,13 @@ check_regex = re.compile("^c(\d{1,3})(.*)", re.IGNORECASE)
 save_regex = re.compile("^s(\d{1,3})(.*)", re.IGNORECASE)
 generic_regex = re.compile("^(\d{1,8})d(\d{1,8})(.*)", re.IGNORECASE)
 
+
 class DiceRecord:
     """
     A record of a player's luck and speech throughout a session.
     Note that the players name is not stored here,
     it is the key by which the DiceRecord is accessed.
     """
-
 
     def __init__(self):
         self.check_successes = 0
@@ -76,6 +76,7 @@ class DiceRecord:
 client = discord.Client()
 dice_manager_dict = defaultdict(DiceRecord)
 dice_manager_dict["Everyone"]
+
 
 @client.event
 async def on_ready():
@@ -168,12 +169,12 @@ async def on_message(message):
             die = random.randrange(1, sides+1)
             score += die
             if dice < 300:
-            	results += "[{}]".format(die)
+                results += "[{}]".format(die)
 
         subject = m.group(3)
 
         if len(results) > 400:
-            results = "[lot of dice]"	
+            results = "[lot of dice]"
 
         subject = " re:" + subject if subject else ""
         await client.send_message(
