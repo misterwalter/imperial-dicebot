@@ -6,15 +6,10 @@ The game itself is available for free at https://imperialdawn.com
 This uses the discord.py library available at https://github.com/Rapptz/discord.py, which is pretty great all things considered, especially for setting up simple bots.
 
 # Basic Use
-To roll a check, type 'c' (corresponding to Check) immedidately followed by a number, like so:
+To roll, type 'r' (corresponding to Roll) immediately followed by a number, like so:
 
- - `c3`  ->  **Tdomo Dau** got 3 successes  **[4]**[1] **[3]** on their Check
- - `c4 throw gallon of boi`  ->  **Tosser** got 3 successes  **[4]**[1] **[3]** **[6]** on their Check re:  throw gallon of boi
-
-A Save can be rolled in a similar fashion, using 's' (corresponding to Save):
-
- - `s2 pls no`  ->  **Civi** got 0 successes [1][2] on their Save re:  pls no
- - `s6 dance away gracefully`  ->  **Senulous the Smooth** got 5 successes **[5]** **[4]** **[6]**[3] **[4]** **[6]** on their Save re: dance away gracefully
+ - `r3`  ->  **@Tdomo Dau** got 3 successes  **[4]**[1] **[3]**
+ - `r4 throw gallon of boi`  ->  **@Tosser** got 3 successes  **[4]**[1] **[3]** **[6]** re:  throw gallon of boi
 
 As you can see, adding more text to end of the message beyond the roll specification simply leaves a note on the end of the response, which can be handy and fun.
 
@@ -25,7 +20,7 @@ Not all requested permissions are currently used, but given that it's impossible
 
 # Bootstrapping
 When first setting up your own instance of the bot, be sure to run the ./bootstrap.sh file, as it will do a few handy things for you:
-- Create an example **bot_admin** file. This file should contain the mention tag of the whoever you want to be able to run the !report and !reset functions. The default tag is invalid, but looks a bit like a real mention tag does when not displayed on the client. If you're having trouble figuring out your mention tag, just have the bot print out all messages that it sees, and then tag yourself.
+- Create an example **bot_admin** file. This file should contain the mention tag of the whoever you want to be able to run the !report and !reset functions. The default tag is invalid, but looks a bit like a real mention tag does when not displayed on the client. If you're having trouble figuring out your mention tag, just watch the bot logs.
 - Create an example **token** file. This file should contain your bot's login token, not their Client ID or Client secret.
 - Create a default **report_format** file. This file contains a default format for DiceReport records that I think looks nice enough, but can be edited at your option. I find myself tweaking it often, and now you can too.
 

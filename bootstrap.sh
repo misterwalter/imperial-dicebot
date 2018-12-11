@@ -27,10 +27,8 @@ else
 	echo "Creating example report_format file. It requires no further effort"
 	cat << EOF > report_format
 {mention}'s performance for today:
-    {check_successes} out of {check_dice} dice ({check_accuracy}%) on {check_rolls} checks.
-    You rolled an average of {check_efficiency} dice per check.
-    {save_successes} out of {save_dice} dice ({save_accuracy}%) on {save_rolls} saves.
-    You rolled an average of {save_efficiency} dice per save.
+    {successes} out of {dice} dice ({accuracy}%) on {rolls} rolls.
+    You rolled an average of {efficiency} dice per roll.
 EOF
 fi
 
