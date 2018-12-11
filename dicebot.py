@@ -12,7 +12,7 @@ bot_admin = open("bot_admin", "r").read().strip()
 report_format = open("report_format", "r").read()
 
 # Regular expression for detecting Imperial Dawn rolls.
-dawn_regex = re.compile("^c(\d{1,3})(.*)", re.IGNORECASE)
+dawn_regex = re.compile("^[rc](\d{1,3})(.*)", re.IGNORECASE)
 #Regular expression for detecting generic dice rolls.
 generic_regex = re.compile("^(\d{1,8})d(\d{1,8})(.*)", re.IGNORECASE)
 
