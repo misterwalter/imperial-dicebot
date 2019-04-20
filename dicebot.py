@@ -144,12 +144,6 @@ async def on_message(message):
                     score,
                     subject,
                 ))
-    # Mindless trolling
-    elif "now" in lower and random.randrange(1, 3) is 1:
-        await slow_talk(
-            message,
-            "Now, don't be hasty young {}.".format(message.author.mention)
-        )
     elif "!reset" in lower and message.author.mention == bot_admin:
             dice_manager_dict.clear()
     elif "!report" in lower and message.author.mention == bot_admin:
@@ -158,16 +152,6 @@ async def on_message(message):
                 message.channel,
                 record.display_rolling_stats(mention),
             )
-
-
-# Not currently used but I wanted AW to see a fun thing.
-async def slow_talk(message, response):
-    msg = await client.send_message(message.channel, "hmmmmmmmmm...")
-    await asyncio.sleep(5)
-    for i in range(len(response)+1):
-        await client.edit_message(msg, response[:i])
-        await asyncio.sleep(2)
-
 
 # Actually kicks things off
 client.run(token)
