@@ -28,15 +28,6 @@ class DiceRecord:
         self.successes = 0
         self.dice = 0
         self.rolls = 0
-        self.words = defaultdict(int)
-
-    # Adds the words spoken by a player to a list of words spoken
-    def record_text(self, sentence):
-        punctuation = '''!()-[]{};:'"\,<>./?@#$%^'''
-        clean_sentence = "".join(c for c in sentence if c not in punctuation)
-        word_list = [word.strip() for word in clean_sentence.split(' ')]
-        for word in word_list:
-            self.words[word] += 1
 
     # returns a string of all rolling stats according to a config file
     def display_rolling_stats(self, mention):
@@ -50,19 +41,6 @@ class DiceRecord:
             accuracy=accuracy,
             efficiency=efficiency,
         )
-
-    # returns  list of the most commonly used words, truncated to any length.
-    def list_top_words(self, word_count):
-        inv_dict = defaultdict(list)
-        [inv_dict[word].append(word) for word, count in self.words.items()]
-        word_list = list(inv_dict.keys())
-        word_list.sort()
-        word_list = [inv_dict[num] for num in word_list]
-        final_list = []
-        [final_list.extend(sub_list) for sub_list in word_list[-word_count:]]
-        final_list = final_list[-word_count:]
-        return final_list
-
 
 # Global Initializations
 client = discord.Client()
@@ -81,7 +59,7 @@ async def on_ready():
 async def on_message(message):
     print("{}:{}{}:{}".format(
         message.author,
-        message.server.name+":" if message.server else "",
+        message.guild.name+":" if message.guild else "",
         message.channel,
         message.content,
     ))
@@ -109,8 +87,7 @@ async def on_message(message):
         dice_manager_dict["Everyone"].rolls += 1
 
         subject = " re: " + subject if subject else ""
-        await client.send_message(
-                message.channel,
+        await message.channel.send(
                 "**{0}** got {1} successes {2}{3}".format(
                     message.author.mention,
                     score,
@@ -136,8 +113,7 @@ async def on_message(message):
             results = "[lot of dice]"
 
         subject = " re:" + subject if subject else ""
-        await client.send_message(
-                message.channel,
+        await message.channel.send(
                 "**{0}** rolled{1} Total: **{2}** {3}".format(
                     message.author.display_name,
                     " " + results if results else "",
@@ -147,9 +123,10 @@ async def on_message(message):
     elif "!reset" in lower and message.author.mention == bot_admin:
             dice_manager_dict.clear()
     elif "!report" in lower and message.author.mention == bot_admin:
+        print("REPORTED")
         for mention, record in dice_manager_dict.items():
-            await client.send_message(
-                message.channel,
+            print("MODS")
+            await message.channel.send(
                 record.display_rolling_stats(mention),
             )
 
