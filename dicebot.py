@@ -14,7 +14,7 @@ report_format = open("report_format", "r").read()
 # Regular expression for detecting Imperial Dawn rolls.
 dawn_regex = re.compile("^r(\d{1,3})(.*)", re.IGNORECASE)
 #Regular expression for detecting generic dice rolls.
-generic_regex = re.compile("^(\d{1,8})d(\d{1,8})(.*)", re.IGNORECASE)
+generic_regex = re.compile("^(\d{0,8})d(\d+)\s*([+-]\s*\d+)?(.*)", re.IGNORECASE)
 
 
 class DiceRecord:
@@ -31,8 +31,8 @@ class DiceRecord:
 
     # returns a string of all rolling stats according to a config file
     def display_rolling_stats(self, mention):
-        accuracy = 0 if self.dice is 0 else 100*self.successes/self.dice
-        efficiency = 0 if self.rolls is 0 else self.dice/self.rolls
+        accuracy = 0 if self.dice == 0 else 100*self.successes/self.dice
+        efficiency = 0 if self.rolls == 0 else self.dice/self.rolls
         return report_format.format(
             mention=mention,
             successes=self.successes,
@@ -77,7 +77,7 @@ async def on_message(message):
                 results += " **[{}]**".format(die)
             else:
                 results += "[{}]".format(die)
-        subject = m.group(2)
+        memo = m.group(2)
         dice_manager_dict[message.author.mention].successes += score
         dice_manager_dict[message.author.mention].dice += dice
         dice_manager_dict[message.author.mention].rolls += 1
@@ -86,39 +86,40 @@ async def on_message(message):
         dice_manager_dict["Everyone"].dice += dice
         dice_manager_dict["Everyone"].rolls += 1
 
-        subject = " re: " + subject if subject else ""
+        memo = " re: " + memo if memo else ""
         await message.channel.send(
                 "**{0}** got {1} successes {2}{3}".format(
                     message.author.mention,
                     score,
                     results,
-                    subject
+                    memo
                 ))
     # Roll a generic roll
     elif generic_regex.match(message.content):
         m = generic_regex.match(message.content)
-        score = 0
         results = ""
-        dice = int(m.group(1))
+        dice = int(m.group(1).replace(" ", "")) if m.group(1) else 1
         sides = int(m.group(2))
+        score = int(m.group(3).replace(" ", "")) if m.group(3) else 0
         for i in range(dice):
             die = random.randrange(1, sides+1)
             score += die
             if dice < 300:
                 results += "[{}]".format(die)
 
-        subject = m.group(3)
+        memo = m.group(4)
 
         if len(results) > 400:
-            results = "[lot of dice]"
+            results = "[lots of dice]"
 
-        subject = " re:" + subject if subject else ""
+        memo = " re:" + memo if memo else ""
         await message.channel.send(
-                "**{0}** rolled{1} Total: **{2}** {3}".format(
+                "**{0}** rolled{1} {2}\nTotal: **{3}** {4}".format(
                     message.author.display_name,
                     " " + results if results else "",
+                    m.group(3).replace(" ", "") if m.group(3) else "",
                     score,
-                    subject,
+                    memo,
                 ))
     elif "!reset" in lower and message.author.mention == bot_admin:
             dice_manager_dict.clear()
