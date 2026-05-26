@@ -2,3 +2,6 @@
 .admin
 report_format
 *.swp
+
+## Python stuff
+__pycache__
