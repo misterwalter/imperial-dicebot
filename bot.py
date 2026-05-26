@@ -9,7 +9,7 @@ import discord
 from player_stats import PlayerStats
 
 dawn_regex = re.compile("^r(\d{1,3})(.*)", re.IGNORECASE)       ## Rolling Imperial Dawn Dice r3, r8, r9k, etc
-generic_regex = re.compile("^(\\d{0,4})d(\\d+)\s*([+-]\s*\\d+)?(,*)", re.IGNORECASE)
+generic_regex = re.compile("^(\\d{0,4})d(\\d+)\s*([+-]\s*\\d+)?(.*)", re.IGNORECASE)
 dice_manager_dict = defaultdict(PlayerStats)
 
 class ImperialClient(discord.Client):
@@ -68,7 +68,7 @@ class ImperialClient(discord.Client):
             if len(results) > 400:
                 results = "[lots of dice]"
             memo = dawn_match.group(2)
-            memo = f"re: {memo}" if memo else ""
+            memo = f" re: {memo}" if memo else ""
 
             await message.channel.send(f"**{message.author.mention}** got {score} successes {results}{memo}")
         # GENERIC DICE ROLLS =================================================
