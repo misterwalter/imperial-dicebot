@@ -10,7 +10,7 @@ class PlayerStats:
     
     # Returns a readable record of player info
     def get_report(self, mention : str):
-        accuracy = 0 if self.dice == 0 else 100*self.success/self.dice
+        accuracy = 0 if self.dice == 0 else 100*self.successes/self.dice
         efficiency = 0 if self.rolls == 0 else self.successes/self.rolls
         return """
 {mention}'s performance for today:

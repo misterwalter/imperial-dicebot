@@ -63,8 +63,12 @@ class ImperialClient(discord.Client):
         elif message.content.startswith("!reset") and message.author.mention == self.admin:
             dice_manager_dict.clear()
             await message.channel.send(f"I kill at your command, {self.admin}!\no7")
-        elif message.content.startswith("!report") and message.author.mention == self.admin:
-            await message.channel.send(f"Gimme a minute, damn, {self.admin}!\no7")
+        elif message.content.startswith("!report"):
+            admin_call = message.author.mention == self.admin       ## Only admin can get reports on everyone bc it does ping people
+            for mention, record in dice_manager_dict.items():
+                if admin_call or mention == message.author.mention:
+                    await message.channel.send(record.get_report(mention))
+
 
 
     def activate(self):
