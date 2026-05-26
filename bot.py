@@ -16,6 +16,18 @@ class ImperialClient(discord.Client):
     async def on_ready(self):
         print("Logged and Loaded as", self.user)
 
+    def roll_die(self, sides : int, mention : str) -> int:
+        result = random.randrange(1, sides+1)
+        print(f"{mention} rolled a {result} out of {sides}")
+
+        dice_manager_dict[mention].score_per_side[sides] += result
+        dice_manager_dict[mention].dice_per_side[sides] += 1
+        dice_manager_dict["Everyone"].score_per_side[sides] += result
+        dice_manager_dict["Everyone"].dice_per_side[sides] += 1
+
+        return result
+
+
     async def on_message(self, message):
         print("{}:{}{}:{}".format(
             message.author,
@@ -37,29 +49,47 @@ class ImperialClient(discord.Client):
         print(generic_match)
         # print(message.author.mention)
         # print(self.admin)
+        # IMPERIAL DAWN DICE ROLLS ===========================================
         if dawn_match:
             results = ""
             score = 0
             dice_count = int(dawn_match.group(1))
             for i in range(dice_count):
-                die = random.randrange(1, 7)        ## yes this is 1-6
+                die = self.roll_die(6, message.author.mention)
                 if die >= 3:
                     score += 1
                     results += f" **[{die}]**"
                 else:
-                    results += f"[{die}]"
+                    results += f" [{die}]"
+
+
+            ## Final Formatting
+            if len(results) > 400:
+                results = "[lots of dice]"
             memo = dawn_match.group(2)
-            dice_manager_dict[message.author.mention].successes += score
-            dice_manager_dict[message.author.mention].dice += dice_count
-            dice_manager_dict[message.author.mention].rolls += 1
-
-            dice_manager_dict["Everyone"].successes += score
-            dice_manager_dict["Everyone"].dice += dice_count
-            dice_manager_dict["Everyone"].rolls += 1
-
             memo = f"re: {memo}" if memo else ""
 
-            await message.channel.send(f"**{message.author.mention} got {score} successes {results}{memo}")
+            await message.channel.send(f"**{message.author.mention}** got {score} successes {results}{memo}")
+        # GENERIC DICE ROLLS =================================================
+        elif generic_match:
+            results = ""
+            dice = int(generic_match.group(1).replace(" ", "")) if generic_match.group(1) else 1
+            sides = int(generic_match.group(2))
+            bonus = int(generic_match.group(3).replace(" ", "")) if generic_match.group(3) else 0
+            score = bonus ## Final +/- is a good place to start scoring
+            for i in range(dice):
+                roll_score = self.roll_die(sides, message.author.mention)
+                score += roll_score
+                results = f"{results}[{roll_score}]"
+
+
+            ## Final Formatting
+            if len(results) > 400:
+                results = "[lots of dice]"
+            memo = generic_match.group(4)
+            memo = f"re: {memo}" if memo else ""
+
+            await message.channel.send(f"{message.author.mention} rolled {results}\nTotal: {score} {memo}")
         elif message.content.startswith("!reset") and message.author.mention == self.admin:
             dice_manager_dict.clear()
             await message.channel.send(f"I kill at your command, {self.admin}!\no7")
