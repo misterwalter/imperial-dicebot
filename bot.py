@@ -9,7 +9,7 @@ import discord
 from player_stats import PlayerStats
 
 dawn_regex = re.compile("^r(\d{1,3})(.*)", re.IGNORECASE)       ## Rolling Imperial Dawn Dice r3, r8, r9k, etc
-generic_regex = re.compile("^(\\d{0,8})d(\\d+)\s*([+-]\s*\\d+)?(,*)", re.IGNORECASE)
+generic_regex = re.compile("^(\\d{0,4})d(\\d+)\s*([+-]\s*\\d+)?(,*)", re.IGNORECASE)
 dice_manager_dict = defaultdict(PlayerStats)
 
 class ImperialClient(discord.Client):
@@ -18,12 +18,13 @@ class ImperialClient(discord.Client):
 
     def roll_die(self, sides : int, mention : str) -> int:
         result = random.randrange(1, sides+1)
-        print(f"{mention} rolled a {result} out of {sides}")
+        # print(f"{mention} rolled a {result} out of {sides}")
 
-        dice_manager_dict[mention].score_per_side[sides] += result
-        dice_manager_dict[mention].dice_per_side[sides] += 1
-        dice_manager_dict["Everyone"].score_per_side[sides] += result
-        dice_manager_dict["Everyone"].dice_per_side[sides] += 1
+        for roller in [mention, "Everyone"]:
+            dice_manager_dict[roller].score += result
+            dice_manager_dict[roller].dice += 1
+            dice_manager_dict[roller].score_per_side[sides] += result
+            dice_manager_dict[roller].dice_per_side[sides] += 1
 
         return result
 
