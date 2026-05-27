@@ -38,9 +38,6 @@ class ImperialClient(discord.Client):
         ))
         if message.author == self.user:
             return
-        
-        if message.content == "o/":
-            await message.channel.send("\\o")
 
         ## Regexs first as they are fast and it's casual coding time
         dawn_match = dawn_regex.match(message.content)
